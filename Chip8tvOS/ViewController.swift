@@ -17,8 +17,18 @@ class ViewController: UIViewController {
     private let displayHz: TimeInterval = 1/60
     private let romName = "Space Invaders [David Winter]"
 
+    var chip8View: Chip8View {
+        return view as! Chip8View
+    }
+
+    private func setupChip8View() {
+        chip8View.pixelColor = .green
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setupChip8View()
 
         guard let romData = NSDataAsset(name: romName)?.data else { return }
         let rom = [Byte](romData)
@@ -75,8 +85,6 @@ class ViewController: UIViewController {
     }
 
     private func render(screen: Chip8Screen) {
-        guard let chip8View = self.view as? Chip8View else { return }
-        chip8View.pixelColor = .green
         chip8View.screen = screen
         chip8View.setNeedsDisplay()
     }
