@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Chip8Emulator",
+        "repositoryURL": "https://github.com/ryanggrey/Chip8EmulatorPackage",
+        "state": {
+          "branch": null,
+          "revision": "bceee03b0792a429a7687e564558bbd3c78ed358",
+          "version": "0.0.8"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
