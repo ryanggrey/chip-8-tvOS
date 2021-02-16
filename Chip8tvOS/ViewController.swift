@@ -7,6 +7,7 @@
 
 import UIKit
 import Chip8Emulator
+import GameController
 
 class ViewController: UIViewController {
     private var chip8: Chip8!
@@ -17,11 +18,18 @@ class ViewController: UIViewController {
     private let displayHz: TimeInterval = 1/60
     private let romName = "Space Invaders [David Winter]"
 
+    private var leftTimer: Timer?
+    private var rightTimer: Timer?
+    private var upTimer: Timer?
+    private var downTimer: Timer?
+    private var actionTimer: Timer?
+
     var chip8View: Chip8View {
         return view as! Chip8View
     }
 
     private func setupChip8View() {
+        chip8View.backgroundColor = .black
         chip8View.pixelColor = .green
     }
 
@@ -35,6 +43,161 @@ class ViewController: UIViewController {
         let ram = RomLoader.loadRam(from: rom)
 
         runEmulator(with: ram)
+        startWatchingForControllers()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startWatchingForControllers()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // TODO: test
+        stopWatchingForControllers()
+
+        cpuTimer?.invalidate()
+        cpuTimer = nil
+        displayTimer?.invalidate()
+        displayTimer = nil
+        leftTimer?.invalidate()
+        leftTimer = nil
+        rightTimer?.invalidate()
+        rightTimer = nil
+        upTimer?.invalidate()
+        upTimer = nil
+        downTimer?.invalidate()
+        downTimer = nil
+    }
+
+    // TODO: move game controller stuff into extension
+    // TODO: consider game controller stuff for macOS
+    private func startWatchingForControllers() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { notification in
+            if let gameController = notification.object as? GCController {
+                self.add(gameController: gameController)
+            }
+        }
+        notificationCenter.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: .main) { notification in
+            if let gameController = notification.object as? GCController {
+                self.remove(gameController: gameController)
+            }
+        }
+
+        GCController.startWirelessControllerDiscovery(completionHandler: {})
+    }
+
+    func stopWatchingForControllers() {
+        GCController.stopWirelessControllerDiscovery()
+
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .GCControllerDidConnect, object: nil)
+        notificationCenter.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
+    }
+
+    func add(gameController: GCController) {
+        let movementHandler: GCControllerDirectionPadValueChangedHandler = { [weak self] _, xValue, yValue in
+            guard let self = self else { return }
+
+            if max(abs(xValue), abs(yValue)) == abs(xValue) {
+                if xValue < 0 {
+                    self.tapLeft()
+                } else if xValue > 0{
+                    self.tapRight()
+                }
+            } else {
+                if yValue < 0 {
+                    self.tapDown()
+                } else {
+                    self.tapUp()
+                }
+            }
+        }
+
+        let buttonHandler: GCControllerButtonValueChangedHandler = { [weak self] button, buttonValue, isPressed in
+            guard let self = self else { return }
+
+            self.tapAction()
+        }
+
+        if let microGamepad = gameController.microGamepad {
+            microGamepad.allowsRotation = true
+            microGamepad.dpad.valueChangedHandler = movementHandler
+            microGamepad.buttonA.valueChangedHandler = buttonHandler
+        }
+
+        if let extendedGamepad = gameController.extendedGamepad {
+            extendedGamepad.leftThumbstick.valueChangedHandler = movementHandler
+            extendedGamepad.dpad.valueChangedHandler = movementHandler
+        }
+    }
+
+    func remove(gameController: GCController) {
+        // TODO: needed?
+    }
+
+    // TODO: refactor
+    func tapLeft() {
+        // TODO: test invalidation and key up handling
+        leftTimer?.invalidate()
+        leftTimer = nil
+
+        let keyCode = Chip8KeyCode.four.rawValue
+        chip8.handleKeyDown(key: keyCode)
+
+        leftTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+            self?.chip8.handleKeyUp(key: keyCode)
+        }
+    }
+
+    func tapRight() {
+        rightTimer?.invalidate()
+        rightTimer = nil
+
+        let keyCode = Chip8KeyCode.six.rawValue
+        chip8.handleKeyDown(key: keyCode)
+
+        rightTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+            self?.chip8.handleKeyUp(key: keyCode)
+        }
+    }
+
+    func tapUp() {
+        upTimer?.invalidate()
+        upTimer = nil
+
+        let keyCode = Chip8KeyCode.two.rawValue
+        chip8.handleKeyDown(key: keyCode)
+
+        upTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+            self?.chip8.handleKeyUp(key: keyCode)
+        }
+    }
+
+    func tapDown() {
+        downTimer?.invalidate()
+        downTimer = nil
+
+        let keyCode = Chip8KeyCode.eight.rawValue
+        chip8.handleKeyDown(key: keyCode)
+
+        downTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+            self?.chip8.handleKeyUp(key: keyCode)
+        }
+    }
+
+    func tapAction() {
+        actionTimer?.invalidate()
+        actionTimer = nil
+
+        let keyCode = Chip8KeyCode.five.rawValue
+        chip8.handleKeyDown(key: keyCode)
+
+        actionTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
+            // TODO: do we need this? is there a way to detect press/lift at source event?
+            self?.chip8.handleKeyUp(key: keyCode)
+        }
     }
 
     private func runEmulator(with rom: [Byte]) {
