@@ -15,6 +15,7 @@
 		1601D49925DC30240073C48B /* Chip8tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D49825DC30240073C48B /* Chip8tvOSTests.swift */; };
 		1601D4A425DC30240073C48B /* Chip8tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */; };
 		1601D4B925DC32E70073C48B /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 1601D4B825DC32E70073C48B /* Chip8Emulator */; };
+		1601D4C125DC38490073C48B /* Chip8View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4C025DC38490073C48B /* Chip8View.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		1601D49F25DC30240073C48B /* Chip8tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Chip8tvOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8tvOSUITests.swift; sourceTree = "<group>"; };
 		1601D4A525DC30240073C48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1601D4C025DC38490073C48B /* Chip8View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				1601D48A25DC30240073C48B /* Assets.xcassets */,
 				1601D48C25DC30240073C48B /* LaunchScreen.storyboard */,
 				1601D48F25DC30240073C48B /* Info.plist */,
+				1601D4C025DC38490073C48B /* Chip8View.swift */,
 			);
 			path = Chip8tvOS;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1601D4C125DC38490073C48B /* Chip8View.swift in Sources */,
 				1601D48625DC30200073C48B /* ViewController.swift in Sources */,
 				1601D48425DC30200073C48B /* AppDelegate.swift in Sources */,
 			);
