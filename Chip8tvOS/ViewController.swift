@@ -18,12 +18,6 @@ class ViewController: UIViewController {
     private let displayHz: TimeInterval = 1/60
     private let romName = "Space Invaders [David Winter]"
 
-    private var leftTimer: Timer?
-    private var rightTimer: Timer?
-    private var upTimer: Timer?
-    private var downTimer: Timer?
-    private var actionTimer: Timer?
-
     private var chip8View: Chip8View {
         return view as! Chip8View
     }
@@ -67,14 +61,6 @@ class ViewController: UIViewController {
         cpuTimer = nil
         displayTimer?.invalidate()
         displayTimer = nil
-        leftTimer?.invalidate()
-        leftTimer = nil
-        rightTimer?.invalidate()
-        rightTimer = nil
-        upTimer?.invalidate()
-        upTimer = nil
-        downTimer?.invalidate()
-        downTimer = nil
     }
 
     // TODO: move game controller stuff elsewhere
@@ -103,40 +89,51 @@ class ViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
     }
 
+    enum ButtonType: String {
+        case left
+        case right
+        case up
+        case down
+        case primaryAction
+        case secondaryAction
+    }
+
     private func add(gameController: GCController) {
-        let movementHandler: GCControllerDirectionPadValueChangedHandler = { [weak self] _, xValue, yValue in
-            guard let self = self else { return }
+        let aButton = gameController.physicalInputProfile["Button A"] as! GCControllerButtonInput
+        let xButton = gameController.physicalInputProfile["Button X"] as! GCControllerButtonInput
 
-            if max(abs(xValue), abs(yValue)) == abs(xValue) {
-                if xValue < 0 {
-                    self.tapLeft()
-                } else if xValue > 0{
-                    self.tapRight()
-                }
-            } else {
-                if yValue < 0 {
-                    self.tapDown()
-                } else {
-                    self.tapUp()
-                }
-            }
+        let leftDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .left)
         }
 
-        let buttonHandler: GCControllerButtonValueChangedHandler = { [weak self] button, buttonValue, isPressed in
-            guard let self = self else { return }
-
-            self.tapAction()
+        let upDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .up)
         }
 
-        if let microGamepad = gameController.microGamepad {
-            microGamepad.allowsRotation = true
-            microGamepad.dpad.valueChangedHandler = movementHandler
-            microGamepad.buttonA.valueChangedHandler = buttonHandler
+        let rightDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .right)
         }
 
-        if let extendedGamepad = gameController.extendedGamepad {
-            extendedGamepad.leftThumbstick.valueChangedHandler = movementHandler
-            extendedGamepad.dpad.valueChangedHandler = movementHandler
+        let downDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .down)
+        }
+
+        let primaryActionDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .primaryAction)
+        }
+
+        let secondaryActionDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, buttonType: .secondaryAction)
+        }
+
+        aButton.pressedChangedHandler = primaryActionDidChange
+        xButton.pressedChangedHandler = secondaryActionDidChange
+
+        gameController.physicalInputProfile.allDpads.forEach { dpad in
+            dpad.left.pressedChangedHandler = leftDpadDidChange
+            dpad.up.pressedChangedHandler = upDpadDidChange
+            dpad.right.pressedChangedHandler = rightDpadDidChange
+            dpad.down.pressedChangedHandler = downDpadDidChange
         }
     }
 
@@ -144,66 +141,33 @@ class ViewController: UIViewController {
         // TODO: needed?
     }
 
-    // TODO: refactor
-    private func tapLeft() {
-        // TODO: test invalidation and key up handling
-        leftTimer?.invalidate()
-        leftTimer = nil
-
-        let keyCode = Chip8KeyCode.four.rawValue
-        chip8.handleKeyDown(key: keyCode)
-
-        leftTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
-            self?.chip8.handleKeyUp(key: keyCode)
+    private func chip8KeyCode(for button: ButtonType) -> Chip8KeyCode {
+        // TODO: curate controls per game
+        // TODO: can this be shared with watchOS?
+        switch button {
+        case .left:
+            return .four
+        case .right:
+            return .six
+        case .up:
+            return .two
+        case .down:
+            return .eight
+        case .primaryAction:
+            return .five
+        case .secondaryAction:
+            // tetris quick drop
+            return .seven
         }
     }
 
-    private func tapRight() {
-        rightTimer?.invalidate()
-        rightTimer = nil
+    private func updateChip8Key(isPressed: Bool, buttonType: ButtonType) {
+        let key = self.chip8KeyCode(for: buttonType).rawValue
 
-        let keyCode = Chip8KeyCode.six.rawValue
-        chip8.handleKeyDown(key: keyCode)
-
-        rightTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
-            self?.chip8.handleKeyUp(key: keyCode)
-        }
-    }
-
-    private func tapUp() {
-        upTimer?.invalidate()
-        upTimer = nil
-
-        let keyCode = Chip8KeyCode.two.rawValue
-        chip8.handleKeyDown(key: keyCode)
-
-        upTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
-            self?.chip8.handleKeyUp(key: keyCode)
-        }
-    }
-
-    private func tapDown() {
-        downTimer?.invalidate()
-        downTimer = nil
-
-        let keyCode = Chip8KeyCode.eight.rawValue
-        chip8.handleKeyDown(key: keyCode)
-
-        downTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
-            self?.chip8.handleKeyUp(key: keyCode)
-        }
-    }
-
-    private func tapAction() {
-        actionTimer?.invalidate()
-        actionTimer = nil
-
-        let keyCode = Chip8KeyCode.five.rawValue
-        chip8.handleKeyDown(key: keyCode)
-
-        actionTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak self] _ in
-            // TODO: do we need this? is there a way to detect press/lift at source event?
-            self?.chip8.handleKeyUp(key: keyCode)
+        if isPressed {
+            self.chip8.handleKeyDown(key: key)
+        } else {
+            self.chip8.handleKeyUp(key: key)
         }
     }
 
