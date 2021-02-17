@@ -24,24 +24,16 @@ class ViewController: UIViewController {
     private var downTimer: Timer?
     private var actionTimer: Timer?
 
-    var chip8View: Chip8View {
+    private var chip8View: Chip8View {
         return view as! Chip8View
-    }
-
-    private func setupChip8View() {
-        chip8View.backgroundColor = .black
-        chip8View.pixelColor = .green
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        guard let ram = load(romName: romName) else { return }
+
         setupChip8View()
-
-        guard let romData = NSDataAsset(name: romName)?.data else { return }
-        let rom = [Byte](romData)
-        let ram = RomLoader.loadRam(from: rom)
-
         runEmulator(with: ram)
         startWatchingForControllers()
     }
@@ -55,7 +47,22 @@ class ViewController: UIViewController {
         super.viewDidDisappear(animated)
         // TODO: test
         stopWatchingForControllers()
+        stopTimers()
+    }
 
+    private func setupChip8View() {
+        chip8View.backgroundColor = .black
+        chip8View.pixelColor = .green
+    }
+
+    private func load(romName: String) -> [Byte]? {
+        guard let romData = NSDataAsset(name: romName)?.data else { return nil }
+        let rom = [Byte](romData)
+        let ram = RomLoader.loadRam(from: rom)
+        return ram
+    }
+
+    private func stopTimers() {
         cpuTimer?.invalidate()
         cpuTimer = nil
         displayTimer?.invalidate()
@@ -70,7 +77,7 @@ class ViewController: UIViewController {
         downTimer = nil
     }
 
-    // TODO: move game controller stuff into extension
+    // TODO: move game controller stuff elsewhere
     // TODO: consider game controller stuff for macOS
     private func startWatchingForControllers() {
         let notificationCenter = NotificationCenter.default
@@ -88,7 +95,7 @@ class ViewController: UIViewController {
         GCController.startWirelessControllerDiscovery(completionHandler: {})
     }
 
-    func stopWatchingForControllers() {
+    private func stopWatchingForControllers() {
         GCController.stopWirelessControllerDiscovery()
 
         let notificationCenter = NotificationCenter.default
@@ -96,7 +103,7 @@ class ViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
     }
 
-    func add(gameController: GCController) {
+    private func add(gameController: GCController) {
         let movementHandler: GCControllerDirectionPadValueChangedHandler = { [weak self] _, xValue, yValue in
             guard let self = self else { return }
 
@@ -133,12 +140,12 @@ class ViewController: UIViewController {
         }
     }
 
-    func remove(gameController: GCController) {
+    private func remove(gameController: GCController) {
         // TODO: needed?
     }
 
     // TODO: refactor
-    func tapLeft() {
+    private func tapLeft() {
         // TODO: test invalidation and key up handling
         leftTimer?.invalidate()
         leftTimer = nil
@@ -151,7 +158,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func tapRight() {
+    private func tapRight() {
         rightTimer?.invalidate()
         rightTimer = nil
 
@@ -163,7 +170,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func tapUp() {
+    private func tapUp() {
         upTimer?.invalidate()
         upTimer = nil
 
@@ -175,7 +182,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func tapDown() {
+    private func tapDown() {
         downTimer?.invalidate()
         downTimer = nil
 
@@ -187,7 +194,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func tapAction() {
+    private func tapAction() {
         actionTimer?.invalidate()
         actionTimer = nil
 
@@ -242,13 +249,9 @@ class ViewController: UIViewController {
 
     private func drawChip8IfNeeded() {
         if chip8.needsRedraw {
-            render(screen: chip8.screen)
+            chip8View.screen = chip8.screen
+            chip8View.setNeedsDisplay()
             chip8.needsRedraw = false
         }
-    }
-
-    private func render(screen: Chip8Screen) {
-        chip8View.screen = screen
-        chip8View.setNeedsDisplay()
     }
 }
