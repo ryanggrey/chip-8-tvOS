@@ -1,7 +1,7 @@
 # README
 A Chip-8 emulator for tvOS written in Swift.
 
-TODO: add gif
+![](invaders.png)
 
 ## Architecture
 The core Chip-8 emulator functionality is implemented in [this Swift pacakge](https://github.com/ryanggrey/Chip8EmulatorPackage) which this project uses as a dependency. 
