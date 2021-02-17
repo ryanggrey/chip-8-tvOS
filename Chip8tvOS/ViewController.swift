@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     private var displayTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
-    private let romName = "Space Invaders [David Winter]"
+    //private let romName = "Space Invaders [David Winter]"
+    private let romName = "Tank"
 
     private var chip8View: Chip8View {
         return view as! Chip8View
@@ -89,7 +90,7 @@ class ViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
     }
 
-    enum ButtonType: String {
+    enum ButtonType: CaseIterable {
         case left
         case right
         case up
@@ -102,20 +103,27 @@ class ViewController: UIViewController {
         let aButton = gameController.physicalInputProfile["Button A"] as! GCControllerButtonInput
         let xButton = gameController.physicalInputProfile["Button X"] as! GCControllerButtonInput
 
-        let leftDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .left)
-        }
+        let dpadDidChange: GCControllerDirectionPadValueChangedHandler = { [weak self] dpad, xValue, yValue in
+            guard let self = self else { return }
 
-        let upDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .up)
-        }
+            self.liftAllChip8Keys()
 
-        let rightDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .right)
-        }
+            let isXDominant = max(abs(xValue), abs(yValue)) == abs(xValue)
 
-        let downDpadDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .down)
+            if isXDominant {
+                if xValue < 0 {
+                    self.updateChip8Key(isPressed: true, buttonType: .left)
+                } else if xValue > 0 {
+                    self.updateChip8Key(isPressed: true, buttonType: .right)
+                }
+            } else {
+                if yValue < 0 {
+                    self.updateChip8Key(isPressed: true, buttonType: .down)
+                } else {
+                    self.updateChip8Key(isPressed: true, buttonType: .up)
+                }
+            }
+
         }
 
         let primaryActionDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
@@ -130,10 +138,7 @@ class ViewController: UIViewController {
         xButton.pressedChangedHandler = secondaryActionDidChange
 
         gameController.physicalInputProfile.allDpads.forEach { dpad in
-            dpad.left.pressedChangedHandler = leftDpadDidChange
-            dpad.up.pressedChangedHandler = upDpadDidChange
-            dpad.right.pressedChangedHandler = rightDpadDidChange
-            dpad.down.pressedChangedHandler = downDpadDidChange
+            dpad.valueChangedHandler = dpadDidChange
         }
     }
 
@@ -158,6 +163,13 @@ class ViewController: UIViewController {
         case .secondaryAction:
             // tetris quick drop
             return .seven
+        }
+    }
+
+    private func liftAllChip8Keys() {
+        ButtonType.allCases.forEach { buttonType in
+            let key = self.chip8KeyCode(for: buttonType)
+            self.chip8.handleKeyUp(key: key.rawValue)
         }
     }
 
