@@ -9,15 +9,27 @@ import UIKit
 import Chip8Emulator
 import GameController
 
-class ViewController: UIViewController {
+class Chip8ViewController: UIViewController {
     private var chip8: Chip8!
     private var loadedRom: [Byte]?
     private var cpuTimer: Timer?
     private var displayTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
-    //private let romName = "Space Invaders [David Winter]"
-    private let romName = "Tank"
+    // TODO: inject from previous controller
+    private let romName: RomName = .pong
+
+    private lazy var platformInputMappingService: TVInputMappingService = {
+        return TVInputMappingService()
+    }()
+
+    private lazy var supportedRomService: PlatformSupportedRomService = {
+        return PlatformSupportedRomService(inputMappingService: platformInputMappingService)
+    }()
+
+    private lazy var inputMapper: InputMapper<TVInputMappingService> = {
+        return InputMapper(platformInputMappingService: platformInputMappingService)
+    }()
 
     private var chip8View: Chip8View {
         return view as! Chip8View
@@ -26,7 +38,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let ram = load(romName: romName) else { return }
+        guard let ram = load(romName: romName.rawValue) else { return }
 
         setupChip8View()
         runEmulator(with: ram)
@@ -90,15 +102,6 @@ class ViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
     }
 
-    enum ButtonType: CaseIterable {
-        case left
-        case right
-        case up
-        case down
-        case primaryAction
-        case secondaryAction
-    }
-
     private func add(gameController: GCController) {
         let aButton = gameController.physicalInputProfile["Button A"] as! GCControllerButtonInput
         let xButton = gameController.physicalInputProfile["Button X"] as! GCControllerButtonInput
@@ -112,30 +115,30 @@ class ViewController: UIViewController {
 
             if isXDominant {
                 if xValue < 0 {
-                    self.updateChip8Key(isPressed: true, buttonType: .left)
+                    self.updateChip8Key(isPressed: true, tvInputCode: .left)
                 } else if xValue > 0 {
-                    self.updateChip8Key(isPressed: true, buttonType: .right)
+                    self.updateChip8Key(isPressed: true, tvInputCode: .right)
                 }
             } else {
                 if yValue < 0 {
-                    self.updateChip8Key(isPressed: true, buttonType: .down)
+                    self.updateChip8Key(isPressed: true, tvInputCode: .down)
                 } else {
-                    self.updateChip8Key(isPressed: true, buttonType: .up)
+                    self.updateChip8Key(isPressed: true, tvInputCode: .up)
                 }
             }
 
         }
 
-        let primaryActionDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .primaryAction)
+        let aButtonDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, tvInputCode: .aButton)
         }
 
-        let secondaryActionDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
-            self?.updateChip8Key(isPressed: isPressed, buttonType: .secondaryAction)
+        let xButtonDidChange: GCControllerButtonValueChangedHandler = { [weak self] button, pressure, isPressed in
+            self?.updateChip8Key(isPressed: isPressed, tvInputCode: .xButton)
         }
 
-        aButton.pressedChangedHandler = primaryActionDidChange
-        xButton.pressedChangedHandler = secondaryActionDidChange
+        aButton.pressedChangedHandler = aButtonDidChange
+        xButton.pressedChangedHandler = xButtonDidChange
 
         gameController.physicalInputProfile.allDpads.forEach { dpad in
             dpad.valueChangedHandler = dpadDidChange
@@ -146,35 +149,20 @@ class ViewController: UIViewController {
         // TODO: needed?
     }
 
-    private func chip8KeyCode(for button: ButtonType) -> Chip8KeyCode {
-        // TODO: curate controls per game
-        // TODO: can this be shared with watchOS?
-        switch button {
-        case .left:
-            return .four
-        case .right:
-            return .six
-        case .up:
-            return .two
-        case .down:
-            return .eight
-        case .primaryAction:
-            return .five
-        case .secondaryAction:
-            // tetris quick drop
-            return .seven
-        }
+    private func chip8KeyCode(for tvInputCode: TVInputCode) -> Chip8InputCode? {
+        return inputMapper.map(platformInput: tvInputCode, romName: romName)
     }
 
     private func liftAllChip8Keys() {
-        ButtonType.allCases.forEach { buttonType in
-            let key = self.chip8KeyCode(for: buttonType)
-            self.chip8.handleKeyUp(key: key.rawValue)
+        TVInputCode.allCases.forEach { buttonType in
+            if let key = self.chip8KeyCode(for: buttonType) {
+                self.chip8.handleKeyUp(key: key.rawValue)
+            }
         }
     }
 
-    private func updateChip8Key(isPressed: Bool, buttonType: ButtonType) {
-        let key = self.chip8KeyCode(for: buttonType).rawValue
+    private func updateChip8Key(isPressed: Bool, tvInputCode: TVInputCode) {
+        guard let key = self.chip8KeyCode(for: tvInputCode)?.rawValue else { return }
 
         if isPressed {
             self.chip8.handleKeyDown(key: key)

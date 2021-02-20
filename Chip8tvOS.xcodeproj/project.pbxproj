@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1601D48425DC30200073C48B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D48325DC30200073C48B /* AppDelegate.swift */; };
-		1601D48625DC30200073C48B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D48525DC30200073C48B /* ViewController.swift */; };
+		1601D48625DC30200073C48B /* Chip8ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D48525DC30200073C48B /* Chip8ViewController.swift */; };
 		1601D48925DC30200073C48B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48725DC30200073C48B /* Main.storyboard */; };
 		1601D48B25DC30240073C48B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48A25DC30240073C48B /* Assets.xcassets */; };
 		1601D48E25DC30240073C48B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48C25DC30240073C48B /* LaunchScreen.storyboard */; };
@@ -16,6 +16,10 @@
 		1601D4A425DC30240073C48B /* Chip8tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */; };
 		1601D4B925DC32E70073C48B /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 1601D4B825DC32E70073C48B /* Chip8Emulator */; };
 		1601D4C125DC38490073C48B /* Chip8View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4C025DC38490073C48B /* Chip8View.swift */; };
+		166DA2E325E1CE0500AEE982 /* RomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2E225E1CE0500AEE982 /* RomPickerViewController.swift */; };
+		166DA2EB25E1CFB100AEE982 /* PlatformSupportedRomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2EA25E1CFB100AEE982 /* PlatformSupportedRomService.swift */; };
+		166DA2F025E1CFE000AEE982 /* TVInputMappingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */; };
+		166DA2F825E1D00100AEE982 /* TVInputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2F725E1D00100AEE982 /* TVInputCode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +42,7 @@
 /* Begin PBXFileReference section */
 		1601D48025DC30200073C48B /* Chip8tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chip8tvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1601D48325DC30200073C48B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1601D48525DC30200073C48B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1601D48525DC30200073C48B /* Chip8ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8ViewController.swift; sourceTree = "<group>"; };
 		1601D48825DC30200073C48B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1601D48A25DC30240073C48B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1601D48D25DC30240073C48B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -50,6 +54,10 @@
 		1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8tvOSUITests.swift; sourceTree = "<group>"; };
 		1601D4A525DC30240073C48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1601D4C025DC38490073C48B /* Chip8View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8View.swift; sourceTree = "<group>"; };
+		166DA2E225E1CE0500AEE982 /* RomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RomPickerViewController.swift; sourceTree = "<group>"; };
+		166DA2EA25E1CFB100AEE982 /* PlatformSupportedRomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformSupportedRomService.swift; sourceTree = "<group>"; };
+		166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVInputMappingService.swift; sourceTree = "<group>"; };
+		166DA2F725E1D00100AEE982 /* TVInputCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVInputCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,12 +110,16 @@
 			isa = PBXGroup;
 			children = (
 				1601D48325DC30200073C48B /* AppDelegate.swift */,
-				1601D48525DC30200073C48B /* ViewController.swift */,
+				1601D48525DC30200073C48B /* Chip8ViewController.swift */,
 				1601D48725DC30200073C48B /* Main.storyboard */,
 				1601D48A25DC30240073C48B /* Assets.xcassets */,
 				1601D48C25DC30240073C48B /* LaunchScreen.storyboard */,
 				1601D48F25DC30240073C48B /* Info.plist */,
 				1601D4C025DC38490073C48B /* Chip8View.swift */,
+				166DA2E225E1CE0500AEE982 /* RomPickerViewController.swift */,
+				166DA2EA25E1CFB100AEE982 /* PlatformSupportedRomService.swift */,
+				166DA2F725E1D00100AEE982 /* TVInputCode.swift */,
+				166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */,
 			);
 			path = Chip8tvOS;
 			sourceTree = "<group>";
@@ -267,8 +279,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1601D4C125DC38490073C48B /* Chip8View.swift in Sources */,
-				1601D48625DC30200073C48B /* ViewController.swift in Sources */,
+				166DA2F025E1CFE000AEE982 /* TVInputMappingService.swift in Sources */,
+				1601D48625DC30200073C48B /* Chip8ViewController.swift in Sources */,
 				1601D48425DC30200073C48B /* AppDelegate.swift in Sources */,
+				166DA2E325E1CE0500AEE982 /* RomPickerViewController.swift in Sources */,
+				166DA2F825E1D00100AEE982 /* TVInputCode.swift in Sources */,
+				166DA2EB25E1CFB100AEE982 /* PlatformSupportedRomService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

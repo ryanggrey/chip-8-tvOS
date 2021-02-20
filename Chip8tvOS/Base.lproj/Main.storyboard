@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Chip8 View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Chip8tvOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="Chip8ViewController" customModule="Chip8tvOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -24,7 +24,39 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="154" y="-34"/>
+            <point key="canvasLocation" x="-467" y="157"/>
+        </scene>
+        <!--Rom Picker View Controller-->
+        <scene sceneID="46N-Ni-tIz">
+            <objects>
+                <viewController id="OFN-u2-Lu1" customClass="RomPickerViewController" customModule="Chip8tvOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="G0E-J8-hmM"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mt7-MY-5gK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yqO-zg-Wzd">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1Rp-5L-fDM">
+                                <rect key="frame" x="80" y="60" width="1760" height="960"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Kfx-aA-gpX"/>
+                        <constraints>
+                            <constraint firstItem="Kfx-aA-gpX" firstAttribute="trailing" secondItem="1Rp-5L-fDM" secondAttribute="trailing" id="5Cl-se-2P5"/>
+                            <constraint firstItem="Kfx-aA-gpX" firstAttribute="bottom" secondItem="1Rp-5L-fDM" secondAttribute="bottom" id="l3D-6D-d7n"/>
+                            <constraint firstItem="1Rp-5L-fDM" firstAttribute="leading" secondItem="Kfx-aA-gpX" secondAttribute="leading" id="re1-wn-MnR"/>
+                            <constraint firstItem="1Rp-5L-fDM" firstAttribute="top" secondItem="Kfx-aA-gpX" secondAttribute="top" id="zHu-5T-nvF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="romTableView" destination="1Rp-5L-fDM" id="Klc-4Y-o2T"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O7p-hg-OHf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-467" y="-1305"/>
         </scene>
     </scenes>
 </document>
