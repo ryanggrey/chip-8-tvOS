@@ -63,7 +63,7 @@ class Chip8ViewController: UIViewController {
     }
 
     private func load(romName: String) -> [Byte]? {
-        guard let romData = NSDataAsset(name: romName)?.data else { return nil }
+        guard let romData = NSDataAsset(name: romName, bundle: Bundle.emulator)?.data else { return nil }
         let rom = [Byte](romData)
         let ram = RomLoader.loadRam(from: rom)
         return ram
