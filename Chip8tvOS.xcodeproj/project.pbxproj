@@ -14,12 +14,12 @@
 		1601D48E25DC30240073C48B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48C25DC30240073C48B /* LaunchScreen.storyboard */; };
 		1601D49925DC30240073C48B /* Chip8tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D49825DC30240073C48B /* Chip8tvOSTests.swift */; };
 		1601D4A425DC30240073C48B /* Chip8tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */; };
-		1601D4B925DC32E70073C48B /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 1601D4B825DC32E70073C48B /* Chip8Emulator */; };
 		1601D4C125DC38490073C48B /* Chip8View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4C025DC38490073C48B /* Chip8View.swift */; };
 		166DA2E325E1CE0500AEE982 /* RomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2E225E1CE0500AEE982 /* RomPickerViewController.swift */; };
 		166DA2EB25E1CFB100AEE982 /* PlatformSupportedRomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2EA25E1CFB100AEE982 /* PlatformSupportedRomService.swift */; };
 		166DA2F025E1CFE000AEE982 /* TVInputMappingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */; };
 		166DA2F825E1D00100AEE982 /* TVInputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2F725E1D00100AEE982 /* TVInputCode.swift */; };
+		166DA34D25E43A4000AEE982 /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 166DA34C25E43A4000AEE982 /* Chip8Emulator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +58,7 @@
 		166DA2EA25E1CFB100AEE982 /* PlatformSupportedRomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformSupportedRomService.swift; sourceTree = "<group>"; };
 		166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVInputMappingService.swift; sourceTree = "<group>"; };
 		166DA2F725E1D00100AEE982 /* TVInputCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVInputCode.swift; sourceTree = "<group>"; };
+		166DA34025E4398700AEE982 /* Chip8Emulator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Chip8Emulator; path = ../../Chip8Emulator/Chip8Emulator; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1601D4B925DC32E70073C48B /* Chip8Emulator in Frameworks */,
+				166DA34D25E43A4000AEE982 /* Chip8Emulator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,10 +90,12 @@
 		1601D47725DC30200073C48B = {
 			isa = PBXGroup;
 			children = (
+				166DA34025E4398700AEE982 /* Chip8Emulator */,
 				1601D48225DC30200073C48B /* Chip8tvOS */,
 				1601D49725DC30240073C48B /* Chip8tvOSTests */,
 				1601D4A225DC30240073C48B /* Chip8tvOSUITests */,
 				1601D48125DC30200073C48B /* Products */,
+				166DA34425E439F100AEE982 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +145,13 @@
 			path = Chip8tvOSUITests;
 			sourceTree = "<group>";
 		};
+		166DA34425E439F100AEE982 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,7 +169,7 @@
 			);
 			name = Chip8tvOS;
 			packageProductDependencies = (
-				1601D4B825DC32E70073C48B /* Chip8Emulator */,
+				166DA34C25E43A4000AEE982 /* Chip8Emulator */,
 			);
 			productName = Chip8tvOS;
 			productReference = 1601D48025DC30200073C48B /* Chip8tvOS.app */;
@@ -233,7 +243,6 @@
 			);
 			mainGroup = 1601D47725DC30200073C48B;
 			packageReferences = (
-				1601D4B725DC32E70073C48B /* XCRemoteSwiftPackageReference "Chip8Emulator" */,
 			);
 			productRefGroup = 1601D48125DC30200073C48B /* Products */;
 			projectDirPath = "";
@@ -618,21 +627,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		1601D4B725DC32E70073C48B /* XCRemoteSwiftPackageReference "Chip8Emulator" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "file:///Users/rgrey/dev/personal/Chip8Emulator/Chip8Emulator";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		1601D4B825DC32E70073C48B /* Chip8Emulator */ = {
+		166DA34C25E43A4000AEE982 /* Chip8Emulator */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1601D4B725DC32E70073C48B /* XCRemoteSwiftPackageReference "Chip8Emulator" */;
 			productName = Chip8Emulator;
 		};
 /* End XCSwiftPackageProductDependency section */
