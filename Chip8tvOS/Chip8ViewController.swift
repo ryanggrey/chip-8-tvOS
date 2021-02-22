@@ -16,45 +16,32 @@ class Chip8ViewController: UIViewController {
     private var displayTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
-    // TODO: inject from previous controller
-    private let romName: RomName = .pong
 
-    private lazy var platformInputMappingService: TVInputMappingService = {
-        return TVInputMappingService()
-    }()
-
-    private lazy var supportedRomService: PlatformSupportedRomService = {
-        return PlatformSupportedRomService(inputMappingService: platformInputMappingService)
-    }()
-
-    private lazy var inputMapper: InputMapper<TVInputMappingService> = {
-        return InputMapper(platformInputMappingService: platformInputMappingService)
-    }()
+    // injected from previous controller
+    var romName: RomName!
+    var inputMapper: InputMapper<TVInputMappingService>!
 
     private var chip8View: Chip8View {
         return view as! Chip8View
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setup()
+    }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopWatchingForControllers()
+        stopTimers()
+    }
+
+    private func setup() {
         guard let ram = load(romName: romName.rawValue) else { return }
 
         setupChip8View()
         runEmulator(with: ram)
         startWatchingForControllers()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        startWatchingForControllers()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        // TODO: test
-        stopWatchingForControllers()
-        stopTimers()
     }
 
     private func setupChip8View() {
@@ -79,6 +66,10 @@ class Chip8ViewController: UIViewController {
     // TODO: move game controller stuff elsewhere
     // TODO: consider game controller stuff for macOS
     private func startWatchingForControllers() {
+        if let currentController = GCController.current {
+            self.add(gameController: currentController)
+        }
+
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { notification in
             if let gameController = notification.object as? GCController {

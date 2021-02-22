@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OFN-u2-Lu1">
     <device id="appleTV" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -10,7 +10,7 @@
         <!--Chip8 View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="Chip8ViewController" customModule="Chip8tvOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chip8ViewController" id="BYZ-38-t0r" customClass="Chip8ViewController" customModule="Chip8tvOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -40,6 +40,33 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="1Rp-5L-fDM">
                                 <rect key="frame" x="80" y="60" width="1760" height="960"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="romCell" focusStyle="custom" id="EaO-bp-adi" customClass="RomCell" customModule="Chip8tvOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="66" width="1760" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EaO-bp-adi" id="d7f-6e-awt">
+                                            <rect key="frame" x="0.0" y="0.0" width="1760" height="66"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Vd-1H-x0C" userLabel="romLabel">
+                                                    <rect key="frame" x="25" y="0.0" width="1710" height="66"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="0Vd-1H-x0C" secondAttribute="bottom" id="ArV-1X-9vq"/>
+                                                <constraint firstAttribute="trailing" secondItem="0Vd-1H-x0C" secondAttribute="trailing" constant="25" id="aOq-Qy-yFT"/>
+                                                <constraint firstItem="0Vd-1H-x0C" firstAttribute="top" secondItem="d7f-6e-awt" secondAttribute="top" id="ahI-CY-Edg"/>
+                                                <constraint firstItem="0Vd-1H-x0C" firstAttribute="leading" secondItem="d7f-6e-awt" secondAttribute="leading" constant="25" id="eKB-0N-Ba4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="romLabel" destination="0Vd-1H-x0C" id="Jz2-bd-iLT"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Kfx-aA-gpX"/>
