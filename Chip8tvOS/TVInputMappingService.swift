@@ -21,11 +21,31 @@ struct TVInputMappingService {
             .left : .left,
             .right : .right
         ],
+        .blinky : [
+            .left : .left,
+            .right : .right,
+            .down : .down,
+            .up : .up
+        ],
         .breakout: [
             .left : .left,
             .right : .right
         ],
+        .cave : [
+            .aButton : .primaryAction,
+            .up : .up,
+            .down : .down,
+            .left : .left,
+            .right : .right
+        ],
         .filter : [
+            .left : .left,
+            .right : .right
+        ],
+        .kaleidoscope : [
+            .aButton : .primaryAction,
+            .up : .up,
+            .down : .down,
             .left : .left,
             .right : .right
         ],
@@ -48,10 +68,41 @@ struct TVInputMappingService {
         .rocket : [
             .aButton : .primaryAction
         ],
+        .spaceFlight : [
+            .aButton : .primaryAction,
+            .xButton : .secondaryAction,
+            .down : .down,
+            .up : .up
+        ],
+        .spaceIntercept : [
+            .aButton : .primaryAction,
+            .xButton : .secondaryAction,
+            .left : .left,
+            .up : .up,
+            .right : .right
+        ],
         .spaceInvaders : [
             .aButton : .primaryAction,
             .left : .left,
             .right : .right
+        ],
+        .squash : [
+            .up : .up,
+            .down : .down
+        ],
+        .tank : [
+            .aButton : .primaryAction,
+            .left : .left,
+            .right : .right,
+            .down : .down,
+            .up : .up
+        ],
+        .tapeWorm : [
+            .aButton : .primaryAction,
+            .left : .left,
+            .right : .right,
+            .up : .up,
+            .down : .down
         ],
         .tetris : [
             .down : .secondaryAction,
@@ -60,6 +111,20 @@ struct TVInputMappingService {
             .right : .right
         ],
         .wipeOff : [
+            .left : .left,
+            .right : .right
+        ],
+        .worm : [
+            .aButton : .primaryAction,
+            .left : .left,
+            .right : .right,
+            .up : .up,
+            .down : .down
+        ],
+        .xMirror : [
+            .aButton : .primaryAction,
+            .up : .up,
+            .down : .down,
             .left : .left,
             .right : .right
         ]
