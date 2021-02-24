@@ -14,7 +14,6 @@ class Chip8ViewController: UIViewController {
     private var chip8: Chip8!
     private var loadedRom: [Byte]?
     private var cpuTimer: Timer?
-    private var displayTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
 
@@ -67,8 +66,6 @@ class Chip8ViewController: UIViewController {
     private func stopTimers() {
         cpuTimer?.invalidate()
         cpuTimer = nil
-        displayTimer?.invalidate()
-        displayTimer = nil
     }
 
     // TODO: move game controller stuff elsewhere
@@ -180,7 +177,6 @@ class Chip8ViewController: UIViewController {
         )
 
         startCpu()
-        startRendering()
     }
 
     private func startCpu() {
@@ -191,23 +187,16 @@ class Chip8ViewController: UIViewController {
         )
     }
 
-    private func cpuTimerFired(_: Timer) {
-        chip8.cycle()
+    private func playChip8SoundIfNeeded() {
         if chip8.shouldPlaySound {
             beepPlayer.play()
         }
     }
 
-    private func startRendering() {
-        displayTimer = Timer.scheduledTimer(
-            withTimeInterval: displayHz,
-            repeats: true,
-            block: displayTimerFired
-        )
-    }
-
-    private func displayTimerFired(_: Timer) {
+    private func cpuTimerFired(_: Timer) {
+        chip8.cycle()
         drawChip8IfNeeded()
+        playChip8SoundIfNeeded()
     }
 
     private func drawChip8IfNeeded() {
