@@ -16,13 +16,7 @@ class Chip8ViewController: UIViewController {
     private var cpuTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
-
-    private lazy var beepPlayer: AVAudioPlayer = {
-        let dataAsset = NSDataAsset(name: "chip8-beep", bundle: Bundle.emulator)!
-        let data = dataAsset.data
-        let player = try! AVAudioPlayer(data: data)
-        return player
-    }()
+    private let beepPlayer = BeepPlayer()
 
     // injected from previous controller
     var romName: RomName!

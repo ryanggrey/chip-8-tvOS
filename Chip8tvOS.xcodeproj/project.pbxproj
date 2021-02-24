@@ -10,7 +10,6 @@
 		1601D48425DC30200073C48B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D48325DC30200073C48B /* AppDelegate.swift */; };
 		1601D48625DC30200073C48B /* Chip8ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D48525DC30200073C48B /* Chip8ViewController.swift */; };
 		1601D48925DC30200073C48B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48725DC30200073C48B /* Main.storyboard */; };
-		1601D48B25DC30240073C48B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48A25DC30240073C48B /* Assets.xcassets */; };
 		1601D48E25DC30240073C48B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48C25DC30240073C48B /* LaunchScreen.storyboard */; };
 		1601D49925DC30240073C48B /* Chip8tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D49825DC30240073C48B /* Chip8tvOSTests.swift */; };
 		1601D4A425DC30240073C48B /* Chip8tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1601D4A325DC30240073C48B /* Chip8tvOSUITests.swift */; };
@@ -21,6 +20,7 @@
 		166DA2F825E1D00100AEE982 /* TVInputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2F725E1D00100AEE982 /* TVInputCode.swift */; };
 		166DA34D25E43A4000AEE982 /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 166DA34C25E43A4000AEE982 /* Chip8Emulator */; };
 		166DA35725E46A2200AEE982 /* RomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA35625E46A2200AEE982 /* RomCell.swift */; };
+		166DA3A125E713A100AEE982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48A25DC30240073C48B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,8 +263,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				166DA3A125E713A100AEE982 /* Assets.xcassets in Resources */,
 				1601D48E25DC30240073C48B /* LaunchScreen.storyboard in Resources */,
-				1601D48B25DC30240073C48B /* Assets.xcassets in Resources */,
 				1601D48925DC30200073C48B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
