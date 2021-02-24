@@ -8,6 +8,7 @@
 import UIKit
 import Chip8Emulator
 import GameController
+import AVFoundation
 
 class Chip8ViewController: UIViewController {
     private var chip8: Chip8!
@@ -16,6 +17,13 @@ class Chip8ViewController: UIViewController {
     private var displayTimer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let displayHz: TimeInterval = 1/60
+
+    private lazy var beepPlayer: AVAudioPlayer = {
+        let dataAsset = NSDataAsset(name: "chip8-beep", bundle: Bundle.emulator)!
+        let data = dataAsset.data
+        let player = try! AVAudioPlayer(data: data)
+        return player
+    }()
 
     // injected from previous controller
     var romName: RomName!
@@ -186,7 +194,7 @@ class Chip8ViewController: UIViewController {
     private func cpuTimerFired(_: Timer) {
         chip8.cycle()
         if chip8.shouldPlaySound {
-            // TODO: play sound
+            beepPlayer.play()
         }
     }
 
