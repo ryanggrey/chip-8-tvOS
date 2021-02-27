@@ -11,11 +11,8 @@ import GameController
 import AVFoundation
 
 class Chip8ViewController: UIViewController {
-    private var chip8: Chip8!
+    private var chip8Engine: Chip8Engine = Chip8Engine()
     private var loadedRom: [Byte]?
-    private var cpuTimer: Timer?
-    private let cpuHz: TimeInterval = 1/600
-    private let displayHz: TimeInterval = 1/60
     private let beepPlayer = BeepPlayer()
 
     // injected from previous controller
@@ -34,12 +31,12 @@ class Chip8ViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         stopWatchingForControllers()
-        stopTimers()
     }
 
     private func setup() {
-        guard let ram = load(romName: romName.rawValue) else { return }
+        guard let ram = load(romName: romName) else { return }
 
+        chip8Engine.delegate = self
         setupChip8View()
         runEmulator(with: ram)
         startWatchingForControllers()
@@ -50,16 +47,8 @@ class Chip8ViewController: UIViewController {
         chip8View.pixelColor = .green
     }
 
-    private func load(romName: String) -> [Byte]? {
-        guard let romData = NSDataAsset(name: romName, bundle: Bundle.emulator)?.data else { return nil }
-        let rom = [Byte](romData)
-        let ram = RomLoader.loadRam(from: rom)
-        return ram
-    }
-
-    private func stopTimers() {
-        cpuTimer?.invalidate()
-        cpuTimer = nil
+    private func load(romName: RomName) -> [Byte]? {
+        return RomLoader.loadRam(from: romName)
     }
 
     // TODO: move game controller stuff elsewhere
@@ -146,58 +135,33 @@ class Chip8ViewController: UIViewController {
     private func liftAllChip8Keys() {
         TVInputCode.allCases.forEach { buttonType in
             if let key = self.chip8KeyCode(for: buttonType) {
-                self.chip8.handleKeyUp(key: key.rawValue)
+                self.chip8Engine.handleKeyUp(key: key)
             }
         }
     }
 
     private func updateChip8Key(isPressed: Bool, tvInputCode: TVInputCode) {
-        guard let key = self.chip8KeyCode(for: tvInputCode)?.rawValue else { return }
+        guard let key = self.chip8KeyCode(for: tvInputCode) else { return }
 
         if isPressed {
-            self.chip8.handleKeyDown(key: key)
+            self.chip8Engine.handleKeyDown(key: key)
         } else {
-            self.chip8.handleKeyUp(key: key)
+            self.chip8Engine.handleKeyUp(key: key)
         }
     }
 
     private func runEmulator(with rom: [Byte]) {
-        var chipState = ChipState()
-        chipState.ram = rom
+        chip8Engine.start(with: rom)
+    }
+}
 
-        self.chip8 = Chip8(
-            state: chipState,
-            cpuHz: cpuHz
-        )
-
-        startCpu()
+extension Chip8ViewController: Chip8EngineDelegate {
+    func beep() {
+        beepPlayer.play()
     }
 
-    private func startCpu() {
-        cpuTimer = Timer.scheduledTimer(
-            withTimeInterval: cpuHz,
-            repeats: true,
-            block: cpuTimerFired
-        )
-    }
-
-    private func playChip8SoundIfNeeded() {
-        if chip8.shouldPlaySound {
-            beepPlayer.play()
-        }
-    }
-
-    private func cpuTimerFired(_: Timer) {
-        chip8.cycle()
-        drawChip8IfNeeded()
-        playChip8SoundIfNeeded()
-    }
-
-    private func drawChip8IfNeeded() {
-        if chip8.needsRedraw {
-            chip8View.screen = chip8.screen
-            chip8View.setNeedsDisplay()
-            chip8.needsRedraw = false
-        }
+    func render(screen: Chip8Screen) {
+        chip8View.screen = screen
+        chip8View.setNeedsDisplay()
     }
 }

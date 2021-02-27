@@ -19,8 +19,8 @@
 		166DA2F025E1CFE000AEE982 /* TVInputMappingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2EF25E1CFE000AEE982 /* TVInputMappingService.swift */; };
 		166DA2F825E1D00100AEE982 /* TVInputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA2F725E1D00100AEE982 /* TVInputCode.swift */; };
 		166DA35725E46A2200AEE982 /* RomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166DA35625E46A2200AEE982 /* RomCell.swift */; };
-		166DA37725E6E25600AEE982 /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 166DA37625E6E25600AEE982 /* Chip8Emulator */; };
 		166DA3A125E713A100AEE982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1601D48A25DC30240073C48B /* Assets.xcassets */; };
+		166DA4E425EA8F3500AEE982 /* Chip8Emulator in Frameworks */ = {isa = PBXBuildFile; productRef = 166DA4E325EA8F3500AEE982 /* Chip8Emulator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				166DA37725E6E25600AEE982 /* Chip8Emulator in Frameworks */,
+				166DA4E425EA8F3500AEE982 /* Chip8Emulator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +170,7 @@
 			);
 			name = Chip8tvOS;
 			packageProductDependencies = (
-				166DA37625E6E25600AEE982 /* Chip8Emulator */,
+				166DA4E325EA8F3500AEE982 /* Chip8Emulator */,
 			);
 			productName = Chip8tvOS;
 			productReference = 1601D48025DC30200073C48B /* Chip8tvOS.app */;
@@ -244,7 +244,7 @@
 			);
 			mainGroup = 1601D47725DC30200073C48B;
 			packageReferences = (
-				166DA37525E6E25600AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */,
+				166DA4E225EA8F3500AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */,
 			);
 			productRefGroup = 1601D48125DC30200073C48B /* Products */;
 			projectDirPath = "";
@@ -631,20 +631,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		166DA37525E6E25600AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */ = {
+		166DA4E225EA8F3500AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ryanggrey/Chip8EmulatorPackage";
 			requirement = {
 				kind = exactVersion;
-				version = 0.0.10;
+				version = 0.0.11;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		166DA37625E6E25600AEE982 /* Chip8Emulator */ = {
+		166DA4E325EA8F3500AEE982 /* Chip8Emulator */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 166DA37525E6E25600AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */;
+			package = 166DA4E225EA8F3500AEE982 /* XCRemoteSwiftPackageReference "Chip8EmulatorPackage" */;
 			productName = Chip8Emulator;
 		};
 /* End XCSwiftPackageProductDependency section */
