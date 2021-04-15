@@ -1,10 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "ch8-logo.png",
       "idiom" : "tv",
       "scale" : "1x"
     },
     {
+      "filename" : "ch8-logo@2x.png",
       "idiom" : "tv",
       "scale" : "2x"
     }
